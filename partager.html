@@ -370,15 +370,16 @@
                 author = 'Anonyme';
             }
             
-            const newMessage = {
-                id: Date.now(),
-                type: currentType,
-                content: content,
-                author: author,
-                anonymous: isAnonymous,
-                date: new Date().toISOString(),
-                status: 'pending' // en attente de validation (pour info)
-            };
+           // Dans partager.html, remplacez la création du newMessage par :
+const newMessage = {
+    id: Date.now(),
+    type: currentType,
+    content: content,
+    author: author,
+    anonymous: isAnonymous,
+    date: new Date().toISOString(),
+    status: 'pending'  // ← Important : en attente de validation
+};
             
             // Sauvegarder
             saveMessage(newMessage);
