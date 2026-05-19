@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Paroisse Saint Abraham</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .admin-header h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-header .subtitle {
+            color: #ccc;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #b8860b;
+        }
+        
+        .stat-label {
+            color: #6b5a4a;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #f0e4d4;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        
+        .tab-btn.active {
+            background: #b8860b;
+            color: white;
+        }
+        
+        .message-list {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+        }
+        
+        .message-item {
+            border-bottom: 1px solid #f0e4d4;
+            padding: 1.5rem;
+            transition: 0.2s;
+        }
+        
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        
+        .message-item.pending {
+            background: #fffef7;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .message-item.approved {
+            border-left: 4px solid #4caf50;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .message-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-pending {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+        
+        .badge-approved {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .badge-temoignage {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+        
+        .badge-intention {
+            background: #fce4ec;
+            color: #e91e63;
+        }
+        
+        .message-content {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0.75rem 0;
+            color: #2c241a;
+        }
+        
+        .message-meta {
+            font-size: 0.75rem;
+            color: #8b7a6a;
+            margin-bottom: 0.75rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-approve {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-edit {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .login-container input {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-content textarea {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #8b7a6a;
+        }
+        
+        .export-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <!-- Page de login -->
+    <div id="loginPanel" class="login-container">
+        <div style="text-align: center;">
+            <div class="cross-icon">✝</div>
+            <h2 style="color: #3b2a1f;">Administration</h2>
+            <p style="color: #6b5a4a; margin-bottom: 1.5rem;">Paroisse Saint Abraham</p>
+        </div>
+        <input type="password" id="adminPassword" placeholder="Mot de passe administrateur" style="padding: 0.85rem; border-radius: 40px;">
+        <button onclick="checkPassword()" class="btn-submit" style="margin-top: 0.5rem;">Se connecter</button>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: #aaa;">
+            Mot de passe par défaut : <strong>saintabraham2026</strong>
+        </p>
+    </div>
+    
+    <!-- Panneau admin (caché par défaut) -->
+    <div id="adminPanel" style="display: none;">
+        <button onclick="logout()" class="logout-btn">🚪 Déconnexion</button>
+        
+        <div class="container">
+            <div class="admin-header">
+                <div class="cross-icon">✝</div>
+                <h1>Panneau d'administration</h1>
+                <p class="subtitle">Gérez les témoignages et intentions de prière</p>
+            </div>
+            
+            <!-- Statistiques -->
+            <div class="stats-grid" id="statsContainer">
+                <!-- Rempli par JS -->
+            </div>
+            
+            <!-- Actions admin -->
+            <div class="admin-actions">
+                <button onclick="exportData()" class="export-btn">📥 Exporter toutes les données (JSON)</button>
+                <button onclick="clearAll()" class="btn-delete" style="background: #ff9800;">⚠️ Supprimer tous les messages</button>
+            </div>
+            
+            <!-- Onglets -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="pending">⏳ En attente (<span id="pendingCount">0</span>)</button>
+                <button class="tab-btn" data-tab="approved">✅ Publiés (<span id="approvedCount">0</span>)</button>
+                <button class="tab-btn" data-tab="all">📋 Tous (<span id="allCount">0</span>)</button>
+            </div>
+            
+            <!-- Liste des messages -->
+            <div class="message-list" id="messageList">
+                <div class="skeleton">Chargement...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal d'édition -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>✏️ Modifier le message</h3>
+            <label>Contenu :</label>
+            <textarea id="editContent" rows="4"></textarea>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button onclick="saveEdit()" class="btn-approve">Enregistrer</button>
+                <button onclick="closeModal()" class="btn-delete">Annuler</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const STORAGE_KEY = 'paroisse_messages';
+        let currentMessageId = null;
+        let currentTab = 'pending';
+        
+        // Mot de passe par défaut (à changer après première connexion)
+        const ADMIN_PASSWORD = 'saintabraham2026';
+        
+        // Vérification du mot de passe
+        function checkPassword() {
+            const pwd = document.getElementById('adminPassword').value;
+            if (pwd === ADMIN_PASSWORD) {
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadMessages();
+            } else {
+                alert('Mot de passe incorrect');
+            }
+        }
+        
+        // Déconnexion
+        function logout() {
+            document.getElementById('loginPanel').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        // Récupérer tous les messages
+        function getAllMessages() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        // Sauvegarder tous les messages
+        function saveAllMessages(messages) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+            loadMessages(); // Rafraîchir l'affichage
+        }
+        
+        // Mettre à jour les statistiques
+        function updateStats(messages) {
+            const pending = messages.filter(m => m.status === 'pending').length;
+            const approved = messages.filter(m => m.status === 'approved').length;
+            
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('approvedCount').innerText = approved;
+            document.getElementById('allCount').innerText = messages.length;
+            
+            document.getElementById('statsContainer').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${pending}</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${approved}</div>
+                    <div class="stat-label">Publiés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${messages.length}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            `;
+        }
+        
+        // Approuver un message
+        function approveMessage(id) {
+            let messages = getAllMessages();
+            const index = messages.findIndex(m => m.id === id);
+            if (index !== -1) {
+                messages[index].status = 'approved';
+                saveAllMessages(messages);
+            }
+        }
+        
+        // Supprimer un message
+        function deleteMessage(id) {
+            if (confirm('Supprimer définitivement ce message ?')) {
+                let messages = getAllMessages();
+                messages = messages.filter(m => m.id !== id);
+                saveAllMessages(messages);
+            }
+        }
+        
+        // Ouvrir le modal d'édition
+        function editMessage(id) {
+            const messages = getAllMessages();
+            const message = messages.find(m => m.id === id);
+            if (message) {
+                currentMessageId = id;
+                document.getElementById('editContent').value = message.content;
+                document.getElementById('editModal').style.display = 'flex';
+            }
+        }
+        
+        // Sauvegarder l'édition
+        function saveEdit() {
+            if (currentMessageId) {
+                let messages = getAllMessages();
+                const index = messages.findIndex(m => m.id === currentMessageId);
+                if (index !== -1) {
+                    messages[index].content = document.getElementById('editContent').value;
+                    saveAllMessages(messages);
+                }
+                closeModal();
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentMessageId = null;
+        }
+        
+        // Exporter les données
+        function exportData() {
+            const messages = getAllMessages();
+            const dataStr = JSON.stringify(messages, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `paroisse_messages_${new Date().toISOString().slice(0,19)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Supprimer tous les messages
+        function clearAll() {
+            if (confirm('⚠️ ATTENTION : Cela supprimera TOUS les messages (approuvés et en attente). Êtes-vous absolument sûr ?')) {
+                if (confirm('Dernière confirmation : cette action est irréversible !')) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+                    loadMessages();
+                }
+            }
+        }
+        
+        // Afficher les messages selon l'onglet
+        function displayMessages() {
+            let messages = getAllMessages();
+            
+            // Filtrer selon l'onglet
+            if (currentTab === 'pending') {
+                messages = messages.filter(m => m.status === 'pending');
+            } else if (currentTab === 'approved') {
+                messages = messages.filter(m => m.status === 'approved');
+            }
+            
+            // Trier du plus récent au plus ancien
+            messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const container = document.getElementById('messageList');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>📭 Aucun message dans cette catégorie</p>
+                        <p style="font-size: 0.85rem;">Les messages envoyés via la page "Partager" apparaîtront ici</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            messages.forEach(msg => {
+                const statusClass = msg.status === 'pending' ? 'pending' : 'approved';
+                const statusText = msg.status === 'pending' ? 'En attente' : 'Publié';
+                const typeText = msg.type === 'temoignage' ? '🌹 Témoignage' : '🕯️ Intention';
+                const typeClass = msg.type === 'temoignage' ? 'badge-temoignage' : 'badge-intention';
+                const displayName = msg.anonymous ? 'Anonyme' : msg.author;
+                const dateStr = new Date(msg.date).toLocaleString('fr-FR');
+                
+                html += `
+                    <div class="message-item ${statusClass}" data-id="${msg.id}">
+                        <div class="message-header">
+                            <div>
+                                <span class="message-badge ${typeClass}">${typeText}</span>
+                                <span class="message-badge ${statusClass === 'pending' ? 'badge-pending' : 'badge-approved'}">${statusText}</span>
+                            </div>
+                            <div class="message-meta">
+                                ${displayName} • ${dateStr}
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            « ${msg.content} »
+                        </div>
+                        <div class="action-buttons">
+                            ${msg.status === 'pending' ? `<button class="btn-approve" onclick="approveMessage(${msg.id})">✅ Approuver</button>` : ''}
+                            <button class="btn-edit" onclick="editMessage(${msg.id})">✏️ Modifier</button>
+                            <button class="btn-delete" onclick="deleteMessage(${msg.id})">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Charger et afficher tout
+        function loadMessages() {
+            const messages = getAllMessages();
+            updateStats(messages);
+            displayMessages();
+        }
+        
+        // Gestion des onglets
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTab = btn.dataset.tab;
+                displayMessages();
+            });
+        });
+        
+        // Fermer le modal en cliquant en dehors
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
