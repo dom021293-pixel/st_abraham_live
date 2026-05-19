@@ -1,5 +1,4 @@
-// Données locales (modifiables facilement)
-// Pour modifier, il suffit de changer les valeurs ci-dessous
+// ==================== DONNÉES PAROISSIALES (modifiables facilement) ====================
 
 // 1. Horaires des messes
 const massSchedule = {
@@ -9,31 +8,7 @@ const massSchedule = {
     confessions: "Samedi 17h00-18h00"
 };
 
-// 2. Intentions de prière (vous pouvez en mettre plusieurs, une sera choisie aléatoirement chaque jour)
-const prayerIntentions = [
-    "Pour les malades de l'hôpital de Ouaga 2000.",
-    "Pour la paix au Burkina Faso et dans le monde.",
-    "Pour les jeunes de la paroisse en discernement.",
-    "Pour les familles éprouvées par le deuil.",
-    "Pour notre curé et tous les prêtres de la paroisse."
-];
-
-// 3. Annonces
-const announcements = [
-    { date: "Cette semaine", text: "Chapelet tous les soirs à 17h30 à la chapelle." },
-    { date: "Samedi 06/06", text: "Mariage de Joël & Nadège – Toute la paroisse est invitée !" },
-    { date: "Dimanche prochain", text: "Quête pour les œuvres caritatives. Merci pour votre générosité." },
-    { date: "En juin", text: "Pèlerinage paroissial – Inscriptions au secrétariat." }
-];
-
-// 4. Témoignages
-const testimonies = [
-    { author: "M. Joseph", text: "Grâce à la communauté Saint Abraham, j'ai retrouvé la foi." },
-    { author: "Mme Irène", text: "Les veillées de prière ont guéri ma fille. Merci Seigneur !" },
-    { author: "Jean (15 ans)", text: "Le catéchisme m'a aidé à mieux comprendre l'Évangile." }
-];
-
-// 5. Saisons liturgiques (automatique selon date)
+// 2. Saisons liturgiques (automatique selon date)
 function getLiturgicalSeason() {
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -50,9 +25,150 @@ function getLiturgicalSeason() {
     return "⛪ Temps ordinaire – Chemin de sainteté";
 }
 
-// Fonction pour afficher les horaires
+// ==================== GESTION DES MESSAGES (Témoignages + Intentions) ====================
+
+const STORAGE_KEY = 'paroisse_messages';
+
+// Récupérer tous les messages
+function getAllMessages() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+}
+
+// Sauvegarder un message (utilisé par la page partager.html)
+function saveMessage(message) {
+    const messages = getAllMessages();
+    messages.push(message);
+    // Limiter à 100 messages
+    if (messages.length > 100) messages = messages.slice(-100);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+}
+
+// Exporter la fonction pour qu'elle soit accessible depuis partager.html
+window.saveMessage = saveMessage;
+
+// ==================== AFFICHAGE DANS L'INDEX ====================
+
+// Afficher les témoignages (uniquement ceux de type "temoignage")
+function displayTestimonies() {
+    const container = document.getElementById('testimonies');
+    if (!container) return;
+    
+    const allMessages = getAllMessages();
+    const testimonies = allMessages.filter(msg => msg.type === 'temoignage');
+    
+    // Trier du plus récent au plus ancien
+    testimonies.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Garder les 10 plus récents
+    const recentTestimonies = testimonies.slice(0, 10);
+    
+    if (recentTestimonies.length === 0) {
+        container.innerHTML = `
+            <div class="empty-message">
+                <p>🌹 Aucun témoignage pour le moment.</p>
+                <p>Soyez le premier à partager le vôtre !</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    recentTestimonies.forEach(msg => {
+        const displayName = msg.anonymous ? 'Anonyme' : msg.author;
+        const dateStr = new Date(msg.date).toLocaleDateString('fr-FR');
+        
+        html += `
+            <div class="testimony-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                    <span style="font-size:0.7rem; color:#b8860b;">📅 ${dateStr}</span>
+                    <span style="font-size:0.8rem;">— ${displayName}</span>
+                </div>
+                <div style="margin-top: 0.5rem;">« ${msg.content} »</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Afficher les intentions de prière (uniquement celles de type "intention")
+function displayPrayerIntentions() {
+    const container = document.getElementById('prayer-intentions');
+    if (!container) return;
+    
+    const allMessages = getAllMessages();
+    const intentions = allMessages.filter(msg => msg.type === 'intention');
+    
+    // Trier du plus récent au plus ancien
+    intentions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Garder les 10 plus récentes
+    const recentIntentions = intentions.slice(0, 10);
+    
+    if (recentIntentions.length === 0) {
+        container.innerHTML = `
+            <div class="empty-message">
+                <p>🕯️ Aucune intention de prière pour le moment.</p>
+                <p>Proposez la vôtre sur la page "Partager".</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
+    recentIntentions.forEach(msg => {
+        const displayName = msg.anonymous ? 'Anonyme' : msg.author;
+        
+        html += `
+            <div style="background: #fdf5e6; padding: 0.75rem; border-radius: 16px; border-left: 3px solid #b8860b;">
+                <div style="font-size:0.7rem; color:#b8860b; margin-bottom: 0.25rem;">🙏 ${displayName}</div>
+                <div>${msg.content}</div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    
+    container.innerHTML = html;
+}
+
+// Afficher une intention du jour (tire une intention au hasard pour la mise en avant)
+function displayDailyPrayerIntention() {
+    const container = document.getElementById('prayer-intention');
+    if (!container) return;
+    
+    const allMessages = getAllMessages();
+    const intentions = allMessages.filter(msg => msg.type === 'intention');
+    
+    if (intentions.length === 0) {
+        container.innerHTML = `
+            <p style="background: #fdf5e6; padding: 1rem; border-radius: 20px; text-align: center;">
+                🙏 Prions pour notre communauté paroissiale.
+            </p>
+        `;
+        return;
+    }
+    
+    // Choisir une intention aléatoire chaque jour
+    const todayIndex = new Date().getDate() % intentions.length;
+    const dailyIntention = intentions[todayIndex];
+    const displayName = dailyIntention.anonymous ? 'Un paroissien' : dailyIntention.author;
+    
+    container.innerHTML = `
+        <p style="background: #fdf5e6; padding: 1rem; border-radius: 20px; text-align: center;">
+            🙏 <strong>${displayName}</strong> nous invite à prier pour :<br>
+            « ${dailyIntention.content} »
+        </p>
+    `;
+}
+
+// ==================== AUTRES FONCTIONS (inchangées) ====================
+
+// Afficher les horaires
 function displayMassTimes() {
     const container = document.getElementById('mass-times');
+    if (!container) return;
+    
     container.innerHTML = `
         <div class="mass-day"><strong>Semaine</strong><div class="mass-hour">${massSchedule.semaine}</div></div>
         <div class="mass-day"><strong>Dimanche</strong><div class="mass-hour">${massSchedule.dimanche}</div></div>
@@ -61,13 +177,14 @@ function displayMassTimes() {
     `;
 }
 
-// Fonction pour récupérer les lectures du jour (API AELF)
+// Récupérer les lectures du jour (API AELF)
 async function fetchReadings() {
     const container = document.getElementById('readings');
+    if (!container) return;
+    
     container.innerHTML = '<div class="skeleton">Chargement des lectures...</div>';
     
     try {
-        // API AELF pour les lectures du jour (gratuite, sans clé)
         const response = await fetch('https://api.aelf.org/v1/lectures/aujourdhui');
         if (!response.ok) throw new Error('API indisponible');
         
@@ -94,17 +211,18 @@ async function fetchReadings() {
     }
 }
 
-// Afficher intention du jour
-function displayPrayerIntention() {
-    const todayIndex = new Date().getDate() % prayerIntentions.length;
-    const prayer = prayerIntentions[todayIndex];
-    const container = document.getElementById('prayer-intention');
-    container.innerHTML = `<p>🙏 ${prayer}</p>`;
-}
-
 // Afficher annonces
 function displayAnnouncements() {
     const container = document.getElementById('announcements');
+    if (!container) return;
+    
+    const announcements = [
+        { date: "Cette semaine", text: "Chapelet tous les soirs à 17h30 à la chapelle." },
+        { date: "Samedi 06/06", text: "Mariage de Joël & Nadège – Toute la paroisse est invitée !" },
+        { date: "Dimanche prochain", text: "Quête pour les œuvres caritatives. Merci pour votre générosité." },
+        { date: "En juin", text: "Pèlerinage paroissial – Inscriptions au secrétariat." }
+    ];
+    
     let html = '';
     announcements.forEach(ann => {
         html += `
@@ -120,28 +238,14 @@ function displayAnnouncements() {
 // Afficher saison liturgique
 function displayLiturgicalSeason() {
     const container = document.getElementById('liturgical-season');
+    if (!container) return;
+    
     const season = getLiturgicalSeason();
     container.innerHTML = `<p style="text-align: center; font-size: 1.1rem;">${season}</p>`;
 }
 
-// Afficher témoignages
-function displayTestimonies() {
-    const container = document.getElementById('testimonies');
-    let html = '';
-    testimonies.forEach(t => {
-        html += `
-            <div class="testimony-item">
-                « ${t.text} »
-                <div class="testimony-author">— ${t.author}</div>
-            </div>
-        `;
-    });
-    container.innerHTML = html;
-}
-
-// Configuration des liens externes (à personnaliser)
+// Configuration des liens externes
 function setupExternalLinks() {
-    // À remplacer par vos vrais liens
     const whatsappLink = document.getElementById('whatsapp-link');
     const youtubeLink = document.getElementById('youtube-link');
     const facebookLink = document.getElementById('facebook-link');
@@ -149,18 +253,17 @@ function setupExternalLinks() {
     if (whatsappLink) whatsappLink.href = "https://chat.whatsapp.com/votre-lien";
     if (youtubeLink) youtubeLink.href = "https://youtube.com/@votrechaine";
     if (facebookLink) facebookLink.href = "https://facebook.com/votrepage";
-    
-    // Petit message dans la console pour rappel
-    console.log("🔧 Pensez à remplacer les liens vers WhatsApp, YouTube et Facebook dans le fichier script.js");
 }
 
-// Initialisation au chargement
+// ==================== INITIALISATION ====================
+
 document.addEventListener('DOMContentLoaded', () => {
     displayMassTimes();
     fetchReadings();
-    displayPrayerIntention();
+    displayDailyPrayerIntention();
     displayAnnouncements();
     displayLiturgicalSeason();
-    displayTestimonies();
+    displayTestimonies();      // ← Affiche les témoignages dynamiques
+    displayPrayerIntentions(); // ← Affiche les intentions dynamiques
     setupExternalLinks();
 });
