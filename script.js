@@ -47,15 +47,15 @@ function saveMessage(message) {
 // Exporter la fonction pour qu'elle soit accessible depuis partager.html
 window.saveMessage = saveMessage;
 
-// ==================== AFFICHAGE DANS L'INDEX ====================
+// ==================== AFFICHAGE DANS L'INDEX (UNIQUEMENT LES APPROUVÉS) ====================
 
-// Afficher les témoignages (uniquement ceux de type "temoignage")
+// Afficher les témoignages (uniquement ceux approuvés)
 function displayTestimonies() {
     const container = document.getElementById('testimonies');
     if (!container) return;
     
     const allMessages = getAllMessages();
-    const testimonies = allMessages.filter(msg => msg.type === 'temoignage');
+    const testimonies = allMessages.filter(msg => msg.type === 'temoignage' && msg.status === 'approved');
     
     // Trier du plus récent au plus ancien
     testimonies.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -92,13 +92,13 @@ function displayTestimonies() {
     container.innerHTML = html;
 }
 
-// Afficher les intentions de prière (uniquement celles de type "intention")
+// Afficher les intentions de prière (uniquement celles approuvées)
 function displayPrayerIntentions() {
     const container = document.getElementById('prayer-intentions');
     if (!container) return;
     
     const allMessages = getAllMessages();
-    const intentions = allMessages.filter(msg => msg.type === 'intention');
+    const intentions = allMessages.filter(msg => msg.type === 'intention' && msg.status === 'approved');
     
     // Trier du plus récent au plus ancien
     intentions.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -132,13 +132,13 @@ function displayPrayerIntentions() {
     container.innerHTML = html;
 }
 
-// Afficher une intention du jour (tire une intention au hasard pour la mise en avant)
+// Afficher une intention du jour (parmi les approuvées uniquement)
 function displayDailyPrayerIntention() {
     const container = document.getElementById('prayer-intention');
     if (!container) return;
     
     const allMessages = getAllMessages();
-    const intentions = allMessages.filter(msg => msg.type === 'intention');
+    const intentions = allMessages.filter(msg => msg.type === 'intention' && msg.status === 'approved');
     
     if (intentions.length === 0) {
         container.innerHTML = `
@@ -162,7 +162,7 @@ function displayDailyPrayerIntention() {
     `;
 }
 
-// ==================== AUTRES FONCTIONS (inchangées) ====================
+// ==================== AUTRES FONCTIONS ====================
 
 // Afficher les horaires
 function displayMassTimes() {
@@ -244,12 +244,13 @@ function displayLiturgicalSeason() {
     container.innerHTML = `<p style="text-align: center; font-size: 1.1rem;">${season}</p>`;
 }
 
-// Configuration des liens externes
+// Configuration des liens externes (À MODIFIER AVEC VOS VRAIS LIENS)
 function setupExternalLinks() {
     const whatsappLink = document.getElementById('whatsapp-link');
     const youtubeLink = document.getElementById('youtube-link');
     const facebookLink = document.getElementById('facebook-link');
     
+    // ⚠️ REMPLACEZ CES LIENS PAR LES VÔTRES ⚠️
     if (whatsappLink) whatsappLink.href = "https://chat.whatsapp.com/votre-lien";
     if (youtubeLink) youtubeLink.href = "https://youtube.com/@votrechaine";
     if (facebookLink) facebookLink.href = "https://facebook.com/votrepage";
@@ -263,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     displayDailyPrayerIntention();
     displayAnnouncements();
     displayLiturgicalSeason();
-    displayTestimonies();      // ← Affiche les témoignages dynamiques
-    displayPrayerIntentions(); // ← Affiche les intentions dynamiques
+    displayTestimonies();      // ← Affiche les témoignages approuvés uniquement
+    displayPrayerIntentions(); // ← Affiche les intentions approuvées uniquement
     setupExternalLinks();
 });
