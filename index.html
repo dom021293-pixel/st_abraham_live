@@ -20,87 +20,99 @@
             <div class="divider"></div>
         </header>
 
-        <!-- Section : Messe du jour -->
-        <section class="card mass-card">
-            <h2>📿 Sainte Messe du jour</h2>
-            <div id="mass-times" class="mass-times">
-                <div class="skeleton">Chargement des horaires...</div>
-            </div>
-            <div class="location-link">
-                <a href="https://maps.google.com/?q=Chapelle+Saint+Abraham+Ouaga+2000" target="_blank" rel="noopener noreferrer">
-                    📍 Voir sur Google Maps → Chapelle Saint Abraham
-                </a>
-            </div>
-        </section>
+        <!-- Grille principale : 2 colonnes -->
+        <div class="main-grid">
+            
+            <!-- COLONNE DE GAUCHE -->
+            <div class="left-column">
+                
+                <!-- Section : Messe du jour -->
+                <section class="card mass-card">
+                    <h2>📿 Sainte Messe</h2>
+                    <div id="mass-times" class="mass-times">
+                        <div class="skeleton">Chargement des horaires...</div>
+                    </div>
+                    <div class="location-link">
+                        <a href="https://maps.google.com/?q=Chapelle+Saint+Abraham+Ouaga+2000" target="_blank" rel="noopener noreferrer">
+                            📍 Google Maps → Chapelle Saint Abraham
+                        </a>
+                    </div>
+                </section>
 
-        <!-- Section : Lectures du jour -->
-        <section class="card readings-card">
-            <h2>📖 Lectures du jour</h2>
-            <div id="readings" class="readings-content">
-                <div class="skeleton">Chargement des lectures...</div>
-            </div>
-            <p class="reading-source">Source : AELF</p>
-        </section>
+                <!-- Section : Lectures du jour -->
+                <section class="card readings-card">
+                    <h2>📖 Lectures du jour</h2>
+                    <div id="readings" class="readings-content">
+                        <div class="skeleton">Chargement des lectures...</div>
+                    </div>
+                    <p class="reading-source">Source : AELF</p>
+                </section>
 
-        <!-- Section : Intention de prière du jour (une en avant) -->
-        <section class="card prayer-card">
-            <h2>🕯️ Intention de prière du jour</h2>
-            <div id="prayer-intention" class="prayer-text">
-                <div class="skeleton">Chargement...</div>
-            </div>
-        </section>
+                <!-- Section : Calendrier liturgique -->
+                <section class="card calendar-card">
+                    <h2>📅 Temps liturgique</h2>
+                    <div id="liturgical-season" class="season-info">
+                        <div class="skeleton">Chargement...</div>
+                    </div>
+                </section>
 
-        <!-- Section : Toutes les intentions de prière (approuvées uniquement) -->
-        <section class="card">
-            <h2>🙏 Intentions de prière de la communauté</h2>
-            <div id="prayer-intentions" style="max-height: 400px; overflow-y: auto;">
-                <div class="skeleton">Chargement des intentions...</div>
-            </div>
-            <div class="testimony-cta" style="margin-top: 1rem;">
-                <a href="partager.html" class="btn-outline">
-                    🕯️ Proposer une intention
-                </a>
-            </div>
-        </section>
+                <!-- Section : Annonces -->
+                <section class="card announcements-card">
+                    <h2>🔔 Annonces</h2>
+                    <div id="announcements" class="announcements-list">
+                        <div class="skeleton">Chargement des annonces...</div>
+                    </div>
+                </section>
 
-        <!-- Section : Témoignages (approuvés uniquement) -->
-        <section class="card testimonies-card">
-            <h2>🌹 Témoignages de la communauté</h2>
-            <div id="testimonies" class="testimonies-list">
-                <div class="skeleton">Chargement des témoignages...</div>
+                <!-- Section : Liens utiles -->
+                <section class="card links-card">
+                    <h2>🔗 Liens utiles</h2>
+                    <div class="links-grid">
+                        <a href="#" class="link-item" id="whatsapp-link">💬 WhatsApp</a>
+                        <a href="#" class="link-item" id="youtube-link">📺 YouTube</a>
+                        <a href="#" class="link-item" id="facebook-link">📘 Facebook</a>
+                    </div>
+                </section>
             </div>
-            <div class="testimony-cta" style="margin-top: 1rem;">
-                <a href="partager.html" class="btn-outline">
-                    ✍️ Écrire mon témoignage
-                </a>
-            </div>
-        </section>
 
-        <!-- Section : Annonces -->
-        <section class="card announcements-card">
-            <h2>🔔 Annonces paroissiales</h2>
-            <div id="announcements" class="announcements-list">
-                <div class="skeleton">Chargement des annonces...</div>
-            </div>
-        </section>
+            <!-- COLONNE DE DROITE -->
+            <div class="right-column">
 
-        <!-- Section : Calendrier liturgique -->
-        <section class="card calendar-card">
-            <h2>📅 Temps liturgique</h2>
-            <div id="liturgical-season" class="season-info">
-                <div class="skeleton">Chargement...</div>
-            </div>
-        </section>
+                <!-- Section : Intention de prière du jour (mise en avant) -->
+                <section class="card prayer-card featured">
+                    <h2>🕯️ Intention du jour</h2>
+                    <div id="prayer-intention" class="prayer-text">
+                        <div class="skeleton">Chargement...</div>
+                    </div>
+                </section>
 
-        <!-- Section : Liens utiles -->
-        <section class="card links-card">
-            <h2>🔗 Liens utiles</h2>
-            <div class="links-grid">
-                <a href="#" class="link-item" id="whatsapp-link">💬 Groupe WhatsApp</a>
-                <a href="#" class="link-item" id="youtube-link">📺 Messes en direct (YouTube)</a>
-                <a href="#" class="link-item" id="facebook-link">📘 Page Facebook</a>
+                <!-- Section : Toutes les intentions de prière -->
+                <section class="card">
+                    <h2>🙏 Intentions de la communauté</h2>
+                    <div id="prayer-intentions" class="intentions-list">
+                        <div class="skeleton">Chargement des intentions...</div>
+                    </div>
+                    <div class="cta-bottom">
+                        <a href="partager.html" class="btn-outline">
+                            🕯️ Proposer une intention
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Section : Témoignages -->
+                <section class="card testimonies-card">
+                    <h2>🌹 Témoignages</h2>
+                    <div id="testimonies" class="testimonies-list">
+                        <div class="skeleton">Chargement des témoignages...</div>
+                    </div>
+                    <div class="cta-bottom">
+                        <a href="partager.html" class="btn-outline">
+                            ✍️ Écrire mon témoignage
+                        </a>
+                    </div>
+                </section>
             </div>
-        </section>
+        </div>
 
         <!-- Footer -->
         <footer>
