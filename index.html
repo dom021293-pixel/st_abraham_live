@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Paroisse Saint Abraham - Accueil</title>
+    <meta name="description" content="Bienvenue à la Paroisse Saint Abraham - Horaires des messes, lectures du jour, intentions de prière et vie de la communauté chrétienne.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <!-- Header avec nom de la paroisse -->
+        <header>
+            <div class="cross-icon">✝</div>
+            <h1>Paroisse Saint Abraham</h1>
+            <p class="subtitle">Ouagadougou – Chapelle Saint Abraham, Ouaga 2000</p>
+            <div class="divider"></div>
+        </header>
+
+        <!-- Section : Messe du jour -->
+        <section class="card mass-card">
+            <h2>📿 Sainte Messe du jour</h2>
+            <div id="mass-times" class="mass-times">
+                <div class="skeleton">Chargement des horaires...</div>
+            </div>
+            <div class="location-link">
+                <a href="https://maps.google.com/?q=Chapelle+Saint+Abraham+Ouaga+2000" target="_blank" rel="noopener noreferrer">
+                    📍 Voir sur Google Maps → Chapelle Saint Abraham
+                </a>
+            </div>
+        </section>
+
+        <!-- Section : Lectures du jour -->
+        <section class="card readings-card">
+            <h2>📖 Lectures du jour</h2>
+            <div id="readings" class="readings-content">
+                <div class="skeleton">Chargement des lectures...</div>
+            </div>
+            <p class="reading-source">Source : AELF</p>
+        </section>
+
+        <!-- Section : Intention de prière -->
+        <section class="card prayer-card">
+            <h2>🕯️ Intention de prière du jour</h2>
+            <div id="prayer-intention" class="prayer-text">
+                <div class="skeleton">Chargement...</div>
+            </div>
+        </section>
+
+        <!-- Section : Annonces -->
+        <section class="card announcements-card">
+            <h2>🔔 Annonces paroissiales</h2>
+            <div id="announcements" class="announcements-list">
+                <div class="skeleton">Chargement des annonces...</div>
+            </div>
+        </section>
+
+        <!-- Section : Calendrier liturgique -->
+        <section class="card calendar-card">
+            <h2>📅 Temps liturgique</h2>
+            <div id="liturgical-season" class="season-info">
+                <div class="skeleton">Chargement...</div>
+            </div>
+        </section>
+
+        <!-- Section : Témoignages -->
+        <section class="card testimonies-card">
+            <h2>🌹 Témoignages de la communauté</h2>
+            <div id="testimonies" class="testimonies-list">
+                <div class="skeleton">Chargement des témoignages...</div>
+            </div>
+            <div class="testimony-cta">
+                <a href="https://github.com/votre-compte/ma-paroisse-live/issues/new?title=Témoignage&body=Écrivez%20votre%20témoignage%20ici..." target="_blank" rel="noopener noreferrer" class="btn-outline">
+                    ✍️ Proposer mon témoignage
+                </a>
+            </div>
+        </section>
+
+        <!-- Section : Liens utiles -->
+        <section class="card links-card">
+            <h2>🔗 Liens utiles</h2>
+            <div class="links-grid">
+                <a href="#" class="link-item" id="whatsapp-link">💬 Groupe WhatsApp</a>
+                <a href="#" class="link-item" id="youtube-link">📺 Messes en direct (YouTube)</a>
+                <a href="#" class="link-item" id="facebook-link">📘 Page Facebook</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Paroisse Saint Abraham – Que Dieu vous bénisse 🙏</p>
+            <p class="footer-small">Mise à jour quotidienne – Site paroissial officiel</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
