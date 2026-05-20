@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Intentions de prière – CCB Saint Abraham</title>
+    <meta name="description" content="Soumettez une intention de prière à la communauté CCB Saint Abraham.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .form-card {
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #3b2a1f;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.85rem;
+            border: 1.5px solid #e8dccc;
+            border-radius: 20px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #fefcf8;
+            box-sizing: border-box;
+        }
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #b8860b;
+            box-shadow: 0 0 0 3px rgba(184,134,11,0.1);
+        }
+        textarea { resize: vertical; min-height: 160px; }
+        .checkbox-group {
+            display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0;
+        }
+        .checkbox-group input { width: auto; transform: scale(1.2); }
+        .btn-submit {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-submit:hover { background: #6d28d9; transform: translateY(-2px); }
+        .success-message {
+            background: #ede9fe; color: #4c1d95;
+            padding: 1rem; border-radius: 20px;
+            margin-top: 1rem; text-align: center; display: none;
+        }
+        .error-message {
+            background: #f8d7da; color: #721c24;
+            padding: 1rem; border-radius: 20px;
+            margin-top: 1rem; text-align: center; display: none;
+        }
+        .info-note {
+            background: #ede9fe;
+            padding: 1rem; border-radius: 20px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem; color: #5b21b6; text-align: center;
+        }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            color: #b8860b; text-decoration: none;
+            margin-bottom: 1rem; font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .char-counter { text-align: right; font-size: 0.7rem; color: #aaa; margin-top: 0.25rem; }
+        .intention-preview {
+            background: #fdf5e6;
+            padding: .75rem;
+            border-radius: 16px;
+            border-left: 3px solid #b8860b;
+            margin-bottom: .75rem;
+        }
+        .intention-preview .name { font-size: .7rem; color: #b8860b; margin-bottom: .2rem; }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="container">
+        <a href="index.html" class="back-link">← Retour à l'accueil</a>
+
+        <header>
+            <div class="cross-icon">✝</div>
+            <h1>Proposer une intention de prière</h1>
+            <p class="subtitle">La communauté CCB prie avec vous et pour vous</p>
+            <div class="divider"></div>
+        </header>
+
+        <div class="form-card">
+            <div class="info-note">
+                🕯️ Votre intention sera portée en prière par toute la CCB.
+                Elle sera visible sur l'accueil après validation.
+            </div>
+
+            <form id="intentionForm">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="anonymous">
+                    <label for="anonymous" style="margin-bottom:0;">🙈 Rester anonyme (pas de nom affiché)</label>
+                </div>
+
+                <div class="form-group" id="nameGroup">
+                    <label>Votre prénom ou pseudo</label>
+                    <input type="text" id="authorName" placeholder="ex : Marie, Joseph, Jean...">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Votre intention de prière
+                        <span id="charCount" class="char-counter" style="float:right;font-weight:400;">0/500</span>
+                    </label>
+                    <textarea id="messageContent" maxlength="500"
+                        placeholder="Pour qui ou pour quoi souhaitez-vous que la communauté prie ?&#10;ex : Pour la guérison de ma mère, pour mes examens, en action de grâce..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">🙏 Envoyer mon intention</button>
+
+                <div id="successMessage" class="success-message">
+                    🕯️ Merci ! Votre intention a été transmise. Elle apparaîtra après validation.
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+        </div>
+
+        <!-- Intentions récentes approuvées -->
+        <div class="card">
+            <h2>🙏 Intentions récentes de la communauté</h2>
+            <div id="recentIntentions">
+                <div class="skeleton">Chargement...</div>
+            </div>
+        </div>
+
+        <div class="cta-bottom" style="text-align:center;margin-top:1.5rem;">
+            <a href="temoignage.html" class="btn-outline">🌹 Partager un témoignage à la place</a>
+        </div>
+
+        <footer>
+            <p>CCB Saint Abraham – Que Dieu vous bénisse 🙏</p>
+            <p class="footer-small">Tous les messages sont relus avant publication</p>
+        </footer>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'ccb_messages';
+
+        const anonymousCheckbox = document.getElementById('anonymous');
+        const nameGroup = document.getElementById('nameGroup');
+        const authorNameInput = document.getElementById('authorName');
+        const messageContent = document.getElementById('messageContent');
+        const charCountSpan = document.getElementById('charCount');
+        const successDiv = document.getElementById('successMessage');
+        const errorDiv = document.getElementById('errorMessage');
+
+        messageContent.addEventListener('input', () => {
+            charCountSpan.textContent = `${messageContent.value.length}/500`;
+        });
+
+        anonymousCheckbox.addEventListener('change', () => {
+            nameGroup.style.display = anonymousCheckbox.checked ? 'none' : 'block';
+            if (anonymousCheckbox.checked) authorNameInput.value = '';
+        });
+
+        function loadRecentIntentions() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            const messages = stored ? JSON.parse(stored) : [];
+            const intentions = messages
+                .filter(m => m.type === 'intention' && m.status === 'approved')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+
+            const container = document.getElementById('recentIntentions');
+            if (intentions.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#8b7a6a;padding:1rem;">Soyez le premier à proposer une intention ! 🕯️</p>';
+                return;
+            }
+            container.innerHTML = intentions.map(msg => {
+                const name = msg.anonymous ? 'Anonyme' : msg.author;
+                return `
+                    <div class="intention-preview">
+                        <div class="name">🙏 ${name}</div>
+                        <div>${msg.content.substring(0, 200)}${msg.content.length > 200 ? '...' : ''}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        document.getElementById('intentionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            successDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            const content = messageContent.value.trim();
+            if (!content || content.length < 10) {
+                errorDiv.textContent = '❌ Veuillez écrire une intention d\'au moins 10 caractères.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const isAnon = anonymousCheckbox.checked;
+            let author = isAnon ? 'Anonyme' : authorNameInput.value.trim();
+            if (!isAnon && !author) {
+                errorDiv.textContent = '❌ Veuillez indiquer votre prénom ou cocher "Anonyme".';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const stored = localStorage.getItem(STORAGE_KEY);
+            const messages = stored ? JSON.parse(stored) : [];
+            messages.push({
+                id: Date.now(),
+                type: 'intention',
+                content,
+                author: author.substring(0, 30),
+                anonymous: isAnon,
+                date: new Date().toISOString(),
+                status: 'pending'
+            });
+            if (messages.length > 100) messages.splice(0, messages.length - 100);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+
+            successDiv.style.display = 'block';
+            messageContent.value = '';
+            charCountSpan.textContent = '0/500';
+            authorNameInput.value = '';
+            anonymousCheckbox.checked = false;
+            nameGroup.style.display = 'block';
+            loadRecentIntentions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        loadRecentIntentions();
+    </script>
+</body>
+</html>
