@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>CCB – Communauté Chrétienne de Base</title>
-    <meta name="description" content="Bienvenue à la CCB – Horaires des messes, lectures du jour, intentions de prière et vie de la communauté chrétienne.">
+    <title>CCB Saint Abraham – Lectures & Vie de la communauté</title>
+    <meta name="description" content="CCB Saint Abraham – Lectures du jour (AELF), saints, temps liturgique, intentions de prière et vie de la communauté.">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -21,43 +21,49 @@
 
         <div class="main-grid">
 
-            <!-- COLONNE GAUCHE -->
+            <!-- ══════════ COLONNE GAUCHE ══════════ -->
             <div class="left-column">
 
+                <!-- Horaires Messes -->
                 <section class="card mass-card">
                     <h2>📿 Sainte Messe</h2>
                     <div id="mass-times" class="mass-times">
-                        <div class="skeleton">Chargement des horaires...</div>
+                        <div class="skeleton">Chargement des horaires…</div>
                     </div>
                     <div class="location-link">
-                        <a href="https://maps.google.com/?q=Chapelle+Saint+Abraham+Ouaga+2000" target="_blank" rel="noopener noreferrer">
+                        <a href="https://maps.google.com/?q=Chapelle+Saint+Abraham+Ouaga+2000"
+                           target="_blank" rel="noopener noreferrer">
                             📍 Google Maps → Chapelle Saint Abraham
                         </a>
                     </div>
                 </section>
 
+                <!-- Saints du jour + Temps liturgique (données AELF) -->
+                <section class="card calendar-card">
+                    <h2>🌟 Saints & Temps liturgique</h2>
+                    <div id="saints-du-jour">
+                        <div class="skeleton">Chargement…</div>
+                    </div>
+                </section>
+
+                <!-- Lectures du jour (données AELF) -->
                 <section class="card readings-card">
                     <h2>📖 Lectures du jour</h2>
                     <div id="readings" class="readings-content">
-                        <div class="skeleton">Chargement des lectures...</div>
+                        <div class="skeleton">Chargement des lectures…</div>
                     </div>
-                    <p class="reading-source">Source : AELF</p>
+                    <p class="reading-source">Source : <a href="https://www.aelf.org" target="_blank" rel="noopener" style="color:#b8860b;text-decoration:none;">AELF</a></p>
                 </section>
 
-                <section class="card calendar-card">
-                    <h2>📅 Temps liturgique</h2>
-                    <div id="liturgical-season" class="season-info">
-                        <div class="skeleton">Chargement...</div>
-                    </div>
-                </section>
-
+                <!-- Annonces -->
                 <section class="card announcements-card">
                     <h2>🔔 Annonces</h2>
                     <div id="announcements" class="announcements-list">
-                        <div class="skeleton">Chargement des annonces...</div>
+                        <div class="skeleton">Chargement…</div>
                     </div>
                 </section>
 
+                <!-- Liens utiles -->
                 <section class="card links-card">
                     <h2>🔗 Liens utiles</h2>
                     <div class="links-grid">
@@ -66,22 +72,25 @@
                         <a href="#" class="link-item" id="facebook-link">📘 Facebook</a>
                     </div>
                 </section>
+
             </div>
 
-            <!-- COLONNE DROITE -->
+            <!-- ══════════ COLONNE DROITE ══════════ -->
             <div class="right-column">
 
+                <!-- Intention du jour -->
                 <section class="card prayer-card featured">
                     <h2>🕯️ Intention du jour</h2>
                     <div id="prayer-intention" class="prayer-text">
-                        <div class="skeleton">Chargement...</div>
+                        <div class="skeleton">Chargement…</div>
                     </div>
                 </section>
 
+                <!-- Intentions de la communauté -->
                 <section class="card">
                     <h2>🙏 Intentions de la communauté</h2>
                     <div id="prayer-intentions" class="intentions-list">
-                        <div class="skeleton">Chargement des intentions...</div>
+                        <div class="skeleton">Chargement des intentions…</div>
                     </div>
                     <div class="cta-bottom">
                         <a href="intention.html" class="btn-outline">
@@ -90,10 +99,11 @@
                     </div>
                 </section>
 
+                <!-- Témoignages -->
                 <section class="card testimonies-card">
                     <h2>🌹 Témoignages</h2>
                     <div id="testimonies" class="testimonies-list">
-                        <div class="skeleton">Chargement des témoignages...</div>
+                        <div class="skeleton">Chargement des témoignages…</div>
                     </div>
                     <div class="cta-bottom">
                         <a href="temoignage.html" class="btn-outline">
@@ -101,12 +111,13 @@
                         </a>
                     </div>
                 </section>
+
             </div>
         </div>
 
         <footer>
             <p>CCB Saint Abraham – Que Dieu vous bénisse 🙏</p>
-            <p class="footer-small">Mise à jour quotidienne – Site officiel de la CCB</p>
+            <p class="footer-small">Lectures mises à jour quotidiennement via AELF – Site officiel de la CCB</p>
         </footer>
     </div>
 
